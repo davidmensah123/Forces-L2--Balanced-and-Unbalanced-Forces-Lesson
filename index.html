@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balanced and Unbalanced Forces - Interactive Lesson</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            /* Base font size set to 14pt */
+            font-size: 14pt;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-action {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            font-size: 11pt;
+        }
+
+        .btn-action:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+
+        .marker {
+            display: inline-block;
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        .tick { color: #10b981; }
+        .cross { color: #ef4444; }
+
+        .input-text {
+            border-bottom: 2px solid #94a3b8;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-weight: 600;
+            color: #2563eb;
+            padding: 4px 5px;
+            font-size: 12pt;
+        }
+
+        .feedback-note {
+            display: none;
+            font-size: 11pt;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+        }
+
+        h1 { font-size: 3.5rem !important; }
+        h2 { font-size: 2rem !important; color: #1e3a8a; }
+        h4 { font-size: 1.2rem !important; font-weight: 700; }
+
+        .animate-car { transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="font-extrabold text-blue-900 mb-2 tracking-tighter uppercase">Balanced and Unbalanced Forces</h1>
+            <div class="flex flex-wrap justify-center gap-4 text-sm font-bold uppercase tracking-widest text-blue-600">
+                <span>Equilibrium</span> • <span>Acceleration</span> • <span>Resultant Force</span> • <span>Stationary</span>
+            </div>
+        </header>
+
+        <!-- Section 1: Balanced Forces -->
+        <section class="card border-l-8 border-blue-500">
+            <h2 class="font-bold mb-4 underline decoration-blue-100 underline-offset-8">1. Balanced Forces & Equilibrium</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <p>When the forces acting on an object are <b>equal in size and opposite in direction</b>, they are balanced. The object is in <b>equilibrium</b> and the forces cancel each other out.</p>
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <p class="font-bold text-sm mb-2">Check the State:</p>
+                        <p class="text-sm">When forces are balanced, a stationary object will remain <input type="text" id="q-bal1" class="input-text !w-32 text-center" placeholder="?"> and a moving object will continue at a <input type="text" id="q-bal2" class="input-text !w-40 text-center" placeholder="?"> speed.</p>
+                        <button onclick="checkBalancedBasics()" class="btn-action mt-3 !py-1 px-4 text-xs">Verify</button>
+                        <span id="mark-bal" class="marker"></span>
+                    </div>
+                </div>
+                <div class="bg-slate-100 p-6 rounded-3xl flex flex-col items-center">
+                    <h4 class="text-xs uppercase text-slate-500 mb-4">Tug of War (Fig 1)</h4>
+                    <svg viewBox="0 0 200 100" class="w-full">
+                        <rect x="20" y="60" width="160" height="4" fill="#64748b" /> <!-- Rope -->
+                        <rect x="98" y="55" width="4" height="14" fill="#ef4444" /> <!-- Flag -->
+                        <!-- Left Force -->
+                        <path d="M70 40 H30" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
+                        <text x="30" y="30" font-size="10" font-weight="bold" fill="#2563eb">300N</text>
+                        <!-- Right Force -->
+                        <path d="M130 40 H170" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
+                        <text x="140" y="30" font-size="10" font-weight="bold" fill="#2563eb">300N</text>
+                    </svg>
+                    <p class="text-[10pt] text-slate-500 mt-2 font-bold uppercase italic">Total Force = 0N</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Identifying Motion -->
+        <section class="card border-t-8 border-indigo-400">
+            <h2 class="font-bold mb-4 underline decoration-indigo-100 underline-offset-8">2. Identifying Motion</h2>
+            <p class="text-sm mb-6 italic">Label the forces and identify the state of motion for these balanced systems.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Book on Table -->
+                <div class="p-6 border rounded-2xl flex flex-col items-center bg-indigo-50/30">
+                    <svg viewBox="0 0 160 120" class="w-full h-40 mb-4">
+                        <rect x="40" y="80" width="80" height="5" fill="#475569" /> <!-- Table -->
+                        <rect x="60" y="60" width="40" height="20" fill="#fbcfe8" stroke="#be185d" /> <!-- Book -->
+                        <!-- Normal Reaction -->
+                        <path d="M80 60 V30" stroke="#be185d" stroke-width="2" marker-end="url(#arrow-pink)" />
+                        <text x="85" y="45" font-size="7" font-weight="bold" fill="#be185d">Normal reaction</text>
+                        <!-- Weight -->
+                        <path d="M80 80 V110" stroke="#be185d" stroke-width="2" marker-end="url(#arrow-pink)" />
+                        <text x="85" y="100" font-size="7" font-weight="bold" fill="#be185d">Weight</text>
+                        <!-- Numerical Labels -->
+                        <text x="65" y="45" font-size="6" fill="#be185d">20N</text>
+                        <text x="65" y="100" font-size="6" fill="#be185d">20N</text>
+                    </svg>
+                    <p class="text-xs font-bold uppercase mb-2">Book on Table</p>
+                    <select id="state-book" class="text-xs p-1 border rounded w-full">
+                        <option value="">Select Motion...</option>
+                        <option value="stat">Stationary</option>
+                        <option value="const">Constant Speed</option>
+                        <option value="acc">Accelerating</option>
+                    </select>
+                </div>
+                <!-- Car at Constant Speed -->
+                <div class="p-6 border rounded-2xl flex flex-col items-center bg-indigo-50/30">
+                    <svg viewBox="0 0 160 120" class="w-full h-40 mb-4">
+                        <rect x="50" y="60" width="60" height="20" rx="5" fill="#93c5fd" />
+                        <!-- Air Resistance -->
+                        <path d="M50 70 H15" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" /> 
+                        <text x="5" y="55" font-size="7" font-weight="bold" fill="#2563eb">Air resistance</text>
+                        <!-- Thrust -->
+                        <path d="M110 70 H145" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <text x="115" y="55" font-size="7" font-weight="bold" fill="#2563eb">Thrust</text>
+                        <!-- Numerical Labels -->
+                        <text x="15" y="85" font-size="6" fill="#2563eb">1000N</text>
+                        <text x="125" y="85" font-size="6" fill="#2563eb">1000N</text>
+                    </svg>
+                    <p class="text-xs font-bold uppercase mb-2">Car (already moving)</p>
+                    <select id="state-car" class="text-xs p-1 border rounded w-full">
+                        <option value="">Select Motion...</option>
+                        <option value="stat">Stationary</option>
+                        <option value="const">Constant Speed</option>
+                        <option value="acc">Accelerating</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="checkMotionIdentification()" class="btn-action w-full mt-6">Verify States</button>
+            <div id="motion-fb" class="text-center font-bold text-xs h-4 mt-3"></div>
+        </section>
+
+        <!-- Section 3: Unbalanced Forces & Calculator -->
+        <section class="card border-t-8 border-orange-500 bg-orange-50/20">
+            <h2 class="font-bold mb-4 underline decoration-orange-200 underline-offset-8">3. Unbalanced Forces</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <p>When the forces acting on an object are not equal, they are <b>unbalanced</b>. The overall force acting on the object is the <b>Resultant Force</b>.</p>
+                    <ul class="text-sm space-y-1 font-semibold text-orange-900">
+                        <li>• Same direction? <b>ADD</b> them.</li>
+                        <li>• Opposite direction? <b>SUBTRACT</b> them.</li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-2xl border border-orange-200 shadow-sm">
+                        <h4 class="text-xs uppercase mb-4 text-orange-700">Resultant Force Calculator</h4>
+                        <div class="flex items-center gap-4 text-xs">
+                            <div>
+                                <label class="block mb-1">Left Force (N)</label>
+                                <input type="number" id="calc-left" class="w-full p-2 border rounded" value="200">
+                            </div>
+                            <div class="text-xl font-bold pt-5">vs</div>
+                            <div>
+                                <label class="block mb-1">Right Force (N)</label>
+                                <input type="number" id="calc-right" class="w-full p-2 border rounded" value="500">
+                            </div>
+                        </div>
+                        <button onclick="calculateResultant()" class="btn-action !bg-orange-600 w-full mt-4">Calculate</button>
+                        <p id="calc-res" class="mt-4 text-sm font-bold text-center text-orange-800"></p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-orange-200 flex flex-col items-center justify-center">
+                    <h4 class="text-xs uppercase mb-6 text-slate-500">Acceleration Diagram</h4>
+                    <svg viewBox="0 0 200 120" class="w-full h-auto">
+                        <rect x="80" y="40" width="40" height="40" fill="#fdba74" stroke="#f97316" />
+                        <!-- Left Arrow (Smaller) -->
+                        <path d="M80 60 H40" stroke="#f97316" stroke-width="2" marker-end="url(#arrow-orange)" />
+                        <text x="45" y="55" font-size="8" font-weight="bold" fill="#f97316">200N</text>
+                        <text x="35" y="75" font-size="6" fill="#f97316">Air resistance</text>
+                        <!-- Right Arrow (Larger) -->
+                        <path d="M120 60 H180" stroke="#f97316" stroke-width="4" marker-end="url(#arrow-orange)" />
+                        <text x="130" y="55" font-size="8" font-weight="bold" fill="#f97316">500N</text>
+                        <text x="145" y="75" font-size="6" fill="#f97316">Thrust</text>
+                    </svg>
+                    <p class="text-xs italic text-slate-500 mt-4 text-center">Resultant force is 300N to the right. The object will <b>accelerate</b>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Investigation (Simulation & Graph) -->
+        <section class="card border-t-8 border-emerald-500">
+            <h2 class="font-bold mb-2 underline decoration-emerald-200 underline-offset-8">4. Investigation: Balloon Car</h2>
+            <p class="text-sm mb-6 italic">Observe the forces acting on the car. Increase the volume to increase the Resultant Force.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Lab Area -->
+                <div class="bg-white p-6 rounded-3xl border-2 border-slate-200 flex flex-col items-center">
+                    <div class="relative w-full h-48 bg-slate-50 rounded-xl mb-6 flex items-end overflow-hidden border">
+                        <!-- Track -->
+                        <div class="absolute bottom-0 left-0 right-0 h-4 bg-slate-300"></div>
+                        <!-- Car -->
+                        <div id="sim-car" class="absolute bottom-4 left-4 animate-car">
+                            <svg viewBox="0 0 100 60" width="120" height="80">
+                                <rect x="20" y="35" width="60" height="15" rx="2" fill="#10b981" />
+                                <circle cx="35" cy="50" r="8" fill="#1e293b" />
+                                <circle cx="65" cy="50" r="8" fill="#1e293b" />
+                                <ellipse id="sim-balloon" cx="30" cy="25" rx="15" ry="15" fill="#f472b6" />
+                                <!-- Dynamic Force Arrows (visible during run) -->
+                                <g id="sim-arrows" opacity="0">
+                                    <path d="M80 42 H110" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)" />
+                                    <text x="85" y="38" font-size="6" font-weight="bold" fill="#ef4444">Thrust</text>
+                                    <path d="M20 42 H-10" stroke="#475569" stroke-width="2" marker-end="url(#arrow-slate)" />
+                                    <text x="-15" y="38" font-size="6" font-weight="bold" fill="#475569">Air res.</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full space-y-4">
+                        <label class="block text-xs font-bold uppercase">Balloon Volume (cm³): <span id="vol-display">100</span></label>
+                        <input type="range" id="vol-slider" min="0" max="500" step="100" value="100" class="w-full accent-emerald-600" oninput="updateVolDisplay()">
+                        <button onclick="runCarSim()" id="btn-run" class="btn-action w-full !bg-emerald-600 uppercase">Release Air</button>
+                    </div>
+                </div>
+
+                <!-- Results & Graph -->
+                <div class="space-y-6">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm overflow-y-auto max-h-[150px]">
+                        <h4 class="font-bold uppercase mb-2 text-[10px]">Distance Data Log</h4>
+                        <table class="w-full text-xs border-collapse text-center">
+                            <tr class="bg-slate-800 text-white"><th class="p-1 border">Volume (cm³)</th><th class="p-1 border">Distance (m)</th></tr>
+                            <tbody id="car-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="font-bold uppercase mb-2 text-[10px]">Distance vs Volume Graph</h4>
+                        <div class="relative w-full h-32 border-l-2 border-b-2 border-slate-400 mt-4 ml-10">
+                            <svg id="car-graph" viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+                                <path id="car-path" d="" fill="none" stroke="#10b981" stroke-width="2" />
+                            </svg>
+                            <div class="absolute -bottom-6 left-0 right-0 flex justify-between text-[8px] font-bold">
+                                <span>0</span><span>500 cm³</span>
+                            </div>
+                            <div class="absolute -left-10 top-0 bottom-0 flex flex-col justify-between text-[8px] font-bold">
+                                <span>10m</span><span>0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Investigation Questions -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Variables Task -->
+                <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                    <h4 class="font-bold text-sm mb-3 text-emerald-900 uppercase">1. Investigation Variables</h4>
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="font-bold">Independent Variable:</label>
+                            <input type="text" id="v-iv" class="input-text !text-xs !border-emerald-300" placeholder="What is changed?">
+                        </div>
+                        <div>
+                            <label class="font-bold">Dependent Variable:</label>
+                            <input type="text" id="v-dv" class="input-text !text-xs !border-emerald-300" placeholder="What is measured?">
+                        </div>
+                        <div>
+                            <label class="font-bold">Control Variables:</label>
+                            <input type="text" id="v-cv" class="input-text !text-xs !border-emerald-300" placeholder="What is kept the same?">
+                        </div>
+                        <button onclick="checkCarVariables()" class="btn-action !py-1 px-4 text-xs mt-2 !bg-emerald-700">Check Variables</button>
+                        <span id="mark-car-vars" class="marker"></span>
+                        <div id="fb-car-vars" class="feedback-note">IV: <b>Volume of balloon</b>. DV: <b>Distance travelled</b>. Controls: <b>Type of balloon</b> and <b>size of car</b>.</div>
+                    </div>
+                </div>
+
+                <!-- Analysis Task -->
+                <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                    <h4 class="font-bold text-sm mb-3 text-emerald-900 uppercase">2. Analysis & Reasons</h4>
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <p class="font-bold mb-1">Describe the pattern in the graph:</p>
+                            <input type="text" id="q-pattern" class="input-text !text-xs !border-emerald-300" placeholder="What happens as volume increases?">
+                        </div>
+                        <div>
+                            <p class="font-bold mb-1">Explain the reason for this pattern:</p>
+                            <textarea id="q-reason" class="input-text !text-xs !border-emerald-300 h-16 w-full mt-1" placeholder="Why does it travel further?"></textarea>
+                        </div>
+                        <button onclick="checkCarAnalysis()" class="btn-action !py-1 px-4 text-xs mt-2 !bg-emerald-700">Check Analysis</button>
+                        <span id="mark-car-ana" class="marker"></span>
+                        <div id="fb-car-ana" class="feedback-note"><b>Pattern:</b> As volume increases, distance increases. <b>Reason:</b> A larger volume provides a larger <b>resultant force</b> acting on the car for a longer time.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Plenary Assessment -->
+        <section class="card bg-slate-900 text-white">
+            <h2 class="text-blue-300 font-extrabold mb-8 text-center uppercase tracking-tighter">Final Knowledge Check</h2>
+            <div class="max-w-4xl mx-auto space-y-4 text-sm leading-relaxed bg-white/5 p-8 rounded-3xl border border-white/10">
+                <p>
+                    When the forces acting on an object are equal and opposite, they are said to be 1. <input type="text" id="p-1" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?">. 
+                    The object is in 2. <input type="text" id="p-2" class="input-inline !w-28 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?">. 
+                    The object will remain 3. <input type="text" id="p-3" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> or continue at a 4. <input type="text" id="p-4" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> speed.
+                    When forces are not equal, they are 5. <input type="text" id="p-5" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?">. 
+                    The object either speeds 6. <input type="text" id="p-6" class="input-inline !w-12 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> or slows down in the direction of the 7. <input type="text" id="p-7" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> force.
+                    The overall force is the 8. <input type="text" id="p-8" class="input-inline !w-24 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> force. 
+                    If forces are in the same direction, you 9. <input type="text" id="p-9" class="input-inline !w-16 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> them. 
+                    If opposite, you 10. <input type="text" id="p-10" class="input-inline !w-20 bg-transparent border-b border-blue-500 text-blue-300 outline-none" placeholder="?"> them.
+                </p>
+                <div class="mt-8 flex flex-wrap gap-2 justify-center opacity-60 text-[10px]">
+                    <span class="bg-blue-900 px-2 py-1 rounded">Unbalanced</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Constant</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Resultant</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Subtract</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Equilibrium</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Up</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Stationary</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Add</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Bigger</span>
+                    <span class="bg-blue-900 px-2 py-1 rounded">Balanced</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <button onclick="checkPlenary()" class="btn-action bg-white !text-blue-950 mt-8 px-16 py-4 text-xl font-extrabold uppercase tracking-widest hover:bg-blue-50">Submit Plenary</button>
+                <div id="plenary-result" class="mt-6 text-2xl font-bold text-emerald-400 h-10"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="py-12 text-center text-slate-400 text-xs uppercase tracking-widest border-t border-slate-200 mt-10">
+        <p>© 2026 Science Mastery Series • Forces Module 2</p>
+    </footer>
+
+    <!-- SVG Defs for Arrows -->
+    <svg style="display: none;">
+        <defs>
+            <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+            <marker id="arrow-pink" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#be185d"/></marker>
+            <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f97316"/></marker>
+            <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/></marker>
+            <marker id="arrow-slate" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker>
+        </defs>
+    </svg>
+
+    <script>
+        // Section 1
+        function checkBalancedBasics() {
+            const q1 = document.getElementById('q-bal1').value.toLowerCase();
+            const q2 = document.getElementById('q-bal2').value.toLowerCase();
+            const isCorrect = q1.includes('stat') && q2.includes('const');
+            document.getElementById('mark-bal').innerHTML = isCorrect ? '<span class="tick">✓</span>' : '<span class="cross">✗</span>';
+        }
+
+        // Section 2
+        function checkMotionIdentification() {
+            const b = document.getElementById('state-book').value === 'stat';
+            const c = document.getElementById('state-car').value === 'const';
+            const fb = document.getElementById('motion-fb');
+            if(b && c) {
+                fb.innerText = "✓ Correct! Stationary for the book, Constant speed for the car.";
+                fb.style.color = "#10b981";
+            } else {
+                fb.innerText = "✗ Review balanced force motion (Stationary vs Constant Speed).";
+                fb.style.color = "#ef4444";
+            }
+        }
+
+        // Section 3
+        function calculateResultant() {
+            const L = parseFloat(document.getElementById('calc-left').value) || 0;
+            const R = parseFloat(document.getElementById('calc-right').value) || 0;
+            const resultant = Math.abs(L - R);
+            const direction = R > L ? "Right" : (L > R ? "Left" : "Balanced");
+            const resEl = document.getElementById('calc-res');
+            
+            if(direction === "Balanced") {
+                resEl.innerText = "Resultant Force = 0N (Balanced)";
+            } else {
+                resEl.innerText = `Resultant Force = ${resultant}N to the ${direction}`;
+            }
+        }
+
+        // Section 4
+        const carData = [];
+        function updateVolDisplay() {
+            const vol = document.getElementById('vol-slider').value;
+            document.getElementById('vol-display').innerText = vol;
+            const balloon = document.getElementById('sim-balloon');
+            const size = 15 + (vol/500)*20;
+            balloon.setAttribute('rx', size);
+            balloon.setAttribute('ry', size);
+        }
+
+        function runCarSim() {
+            const vol = parseInt(document.getElementById('vol-slider').value);
+            const car = document.getElementById('sim-car');
+            const btn = document.getElementById('btn-run');
+            const balloon = document.getElementById('sim-balloon');
+            const arrows = document.getElementById('sim-arrows');
+            
+            btn.disabled = true;
+            car.style.transition = "none";
+            car.style.transform = "translateX(0)";
+            arrows.style.opacity = "1";
+            
+            const distMeters = vol / 50;
+            const pixels = distMeters * 35; 
+            
+            setTimeout(() => {
+                car.style.transition = "transform 2s cubic-bezier(0.2, 0, 0.2, 1)";
+                car.style.transform = `translateX(${pixels}px)`;
+                
+                balloon.setAttribute('rx', 15);
+                balloon.setAttribute('ry', 15);
+
+                setTimeout(() => {
+                    arrows.style.opacity = "0";
+                    if(!carData.find(d => d.v === vol)) {
+                        carData.push({ v: vol, d: distMeters });
+                        carData.sort((a,b) => a.v - b.v);
+                        updateCarUI();
+                    }
+                    btn.disabled = false;
+                }, 2000);
+            }, 100);
+        }
+
+        function updateCarUI() {
+            const body = document.getElementById('car-body');
+            body.innerHTML = carData.map(d => `<tr><td class="p-1 border">${d.v}cm³</td><td class="p-1 border">${d.d.toFixed(1)}m</td></tr>`).join('');
+            
+            const path = document.getElementById('car-path');
+            let d = "";
+            carData.forEach((p, i) => {
+                const x = (p.v / 500) * 100;
+                const y = 100 - (p.d / 10) * 100;
+                d += (i === 0 ? "M " : " L ") + x + " " + y;
+            });
+            path.setAttribute('d', d);
+        }
+
+        function checkCarVariables() {
+            const iv = document.getElementById('v-iv').value.toLowerCase();
+            const dv = document.getElementById('v-dv').value.toLowerCase();
+            const cv = document.getElementById('v-cv').value.toLowerCase();
+            const isCorrect = (iv.includes('vol') || iv.includes('air')) && (dv.includes('dist') || dv.includes('travel')) && (cv.includes('balloon') || cv.includes('car'));
+            document.getElementById('mark-car-vars').innerHTML = isCorrect ? '<span class="tick">✓</span>' : '<span class="cross">✗</span>';
+            document.getElementById('fb-car-vars').style.display = 'block';
+        }
+
+        function checkCarAnalysis() {
+            const p = document.getElementById('q-pattern').value.toLowerCase();
+            const r = document.getElementById('q-reason').value.toLowerCase();
+            const isCorrect = p.includes('increase') && (r.includes('force') || r.includes('resultant'));
+            document.getElementById('mark-car-ana').innerHTML = isCorrect ? '<span class="tick">✓</span>' : '<span class="cross">✗</span>';
+            document.getElementById('fb-car-ana').style.display = 'block';
+        }
+
+        // Section 5
+        function checkPlenary() {
+            const answers = [
+                'balanced', 'equilibrium', 'stationary', 'constant', 
+                'unbalanced', 'up', 'bigger', 'resultant', 'add', 'subtract'
+            ];
+            let score = 0;
+            for(let i=1; i<=10; i++) {
+                const val = document.getElementById('p-' + i).value.toLowerCase().trim();
+                if(val.includes(answers[i-1])) score++;
+            }
+            document.getElementById('plenary-result').innerText = `Your Score: ${score}/10`;
+        }
+
+        window.onload = updateVolDisplay;
+    </script>
+</body>
+</html>
